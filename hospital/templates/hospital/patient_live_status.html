@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Status</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background: #f4f6f9; transition: background 0.5s; }
+        
+        /* Default Card Styling */
+        .status-card { border: none; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; transition: all 0.3s; }
+        
+        /* Header Section */
+        .doctor-header { background: white; border-radius: 0 0 30px 30px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        
+        /* Live Indicator Animation */
+        .live-dot { height: 15px; width: 15px; background-color: #ccc; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .dot-active { background-color: #4caf50; box-shadow: 0 0 15px #4caf50; animation: pulse 1.5s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+
+        /* DEPARTMENT THEMES (Add more here!) */
+        /* 1. Cardiology (Red/Heart) */
+        body.theme-Cardiology { background: #fff0f0; }
+        .theme-Cardiology .accent-bg { background: linear-gradient(135deg, #ef5350, #c62828); color: white; }
+        .theme-Cardiology .text-accent { color: #c62828; }
+
+        /* 2. Dental (Blue/Tooth) */
+        body.theme-Dental { background: #e3f2fd; }
+        .theme-Dental .accent-bg { background: linear-gradient(135deg, #42a5f5, #1565c0); color: white; }
+        .theme-Dental .text-accent { color: #1565c0; }
+
+        /* 3. General (Green/Cross) */
+        body.theme-General { background: #e8f5e9; }
+        .theme-General .accent-bg { background: linear-gradient(135deg, #66bb6a, #2e7d32); color: white; }
+        .theme-General .text-accent { color: #2e7d32; }
+    </style>
+</head>
+<body id="main-body">
+
+<div class="container py-0" style="max-width: 500px;">
+    
+    <div class="doctor-header d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <div id="dept-icon-box" class="accent-bg rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-size: 24px;">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <div>
+                <h6 class="fw-bold mb-0 text-dark">Dr. {{ doctor_name }}</h6>
+                <small class="text-accent fw-bold text-uppercase" id="dept-name">{{ department }}</small>
+            </div>
+        </div>
+        <a href="{% url 'patient_dashboard' %}" class="btn btn-light rounded-circle shadow-sm" style="width: 40px; height: 40px;">
+            <i class="fas fa-times text-muted"></i>
+        </a>
+    </div>
+
+    <div class="card status-card mb-3 bg-white">
+        <div class="card-body text-center p-5">
+            
+            <div class="mb-3">
+                <span id="live-indicator" class="live-dot"></span>
+                <span id="status-text" class="fw-bold text-muted small">CONNECTING TO ROOM...</span>
+            </div>
+
+            <h1 id="serving-token" class="display-1 fw-bold text-dark mb-0">--</h1>
+            <p class="text-muted text-uppercase small letter-spacing-2">Now Serving</p>
+            
+            <div class="mt-4 pt-4 border-top d-flex justify-content-between">
+                <div class="text-start">
+                    <small class="text-muted d-block">YOUR TOKEN</small>
+                    <span class="h4 fw-bold text-accent">#{{ my_token }}</span>
+                </div>
+                <div class="text-end">
+                    <small class="text-muted d-block">EST. WAIT</small>
+                    <span id="wait-time-small" class="h4 fw-bold text-dark">-- min</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="travel-box" class="card status-card accent-bg text-white mb-4" style="display:none;">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-car-side fa-2x me-3 opacity-50"></i>
+                <div>
+                    <h6 class="fw-bold mb-0">Smart Travel</h6>
+                    <small class="opacity-75">Leave by <span id="leave-by-time" class="fw-bold text-warning">--:--</span></small>
+                </div>
+            </div>
+            <a id="maps-link" href="#" target="_blank" class="btn btn-light w-100 rounded-pill fw-bold text-accent">
+                Open Google Maps
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAPZUgQM99l10PBbx0nXg4SuIZ_dhXp2Q4",
+    authDomain: "smarthospital-63b2c.firebaseapp.com",
+    databaseURL: "https://smarthospital-63b2c-default-rtdb.firebaseio.com",
+    projectId: "smarthospital-63b2c",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const doctorId = "{{ doctor_id }}"; 
+  const myToken = {{ my_token }};
+  const avgTime = {{ avg_time }};
+  const deptName = "{{ department }}"; // Comes from Django
+
+  // --- THEME ENGINE ---
+  function applyTheme() {
+    const body = document.getElementById('main-body');
+    const iconBox = document.getElementById('dept-icon-box');
+    
+    // 1. Clean Dept Name for CSS class (remove spaces)
+    // e.g., "General Medicine" -> "General" (simplified logic)
+    let themeClass = "theme-General"; // Default
+    let iconHTML = '<i class="fas fa-stethoscope"></i>';
+
+    if (deptName.includes('Cardio')) {
+        themeClass = "theme-Cardiology";
+        iconHTML = '<i class="fas fa-heartbeat"></i>';
+    } else if (deptName.includes('Dental') || deptName.includes('Dentist')) {
+        themeClass = "theme-Dental";
+        iconHTML = '<i class="fas fa-tooth"></i>';
+    } else if (deptName.includes('Eye') || deptName.includes('Ophtha')) {
+        themeClass = "theme-Dental"; // Reuse blue for eyes or make new
+        iconHTML = '<i class="fas fa-eye"></i>';
+    }
+
+    body.classList.add(themeClass);
+    iconBox.innerHTML = iconHTML;
+  }
+  
+  // Run Theme Engine on Load
+  applyTheme();
+
+  // --- FIREBASE LOGIC ---
+  const statusText = document.getElementById('status-text');
+  const liveDot = document.getElementById('live-indicator');
+  const servingDisp = document.getElementById('serving-token');
+  const waitTimeSmall = document.getElementById('wait-time-small');
+  const travelBox = document.getElementById('travel-box');
+  const leaveTimeDisp = document.getElementById('leave-by-time');
+  const mapsLink = document.getElementById('maps-link');
+
+  const doctorRef = ref(db, 'doctors/' + doctorId);
+  
+  onValue(doctorRef, (snapshot) => {
+    const data = snapshot.val();
+    
+    if (data && data.status === "Live") {
+        const currentToken = parseInt(data.current_token);
+        
+        liveDot.className = "live-dot dot-active";
+        statusText.innerText = "LIVE UPDATES ON";
+        statusText.className = "fw-bold text-success small";
+        servingDisp.innerText = currentToken;
+
+        let ahead = myToken - currentToken;
+
+        if (ahead > 0) {
+            // WAITING
+            const waitMins = ahead * avgTime;
+            waitTimeSmall.innerText = waitMins + " min";
+            
+            // Calculate Leave Time (Current Time + Wait Time - 15 mins travel buffer)
+            const targetTime = new Date(new Date().getTime() + (waitMins - 15) * 60000); 
+            const timeString = targetTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            travelBox.style.display = 'block';
+            leaveTimeDisp.innerText = timeString;
+            mapsLink.href = "https://www.google.com/maps/dir/?api=1&destination=Hospital"; 
+
+        } else if (ahead === 0) {
+            // TURN
+            statusText.innerText = "YOUR TURN!";
+            statusText.className = "fw-bold text-success"; // Use theme color ideally
+            servingDisp.innerText = myToken;
+            waitTimeSmall.innerText = "NOW";
+            travelBox.style.display = 'none';
+        } else {
+            // PASSED
+            statusText.innerText = "PASSED";
+            statusText.className = "fw-bold text-danger";
+            waitTimeSmall.innerText = "--";
+            travelBox.style.display = 'none';
+        }
+    } else {
+        // OFFLINE
+        liveDot.className = "live-dot";
+        statusText.innerText = "OFFLINE";
+        statusText.className = "fw-bold text-muted small";
+        servingDisp.innerText = "--";
+        waitTimeSmall.innerText = "--";
+        travelBox.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>

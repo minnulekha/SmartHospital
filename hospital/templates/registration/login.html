@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f0f2f5; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-card { border: none; border-radius: 15px; overflow: hidden; }
+        .login-header { background: #1a73e8; color: white; padding: 30px; text-align: center; }
+        .btn-google-style { background-color: #1a73e8; color: white; font-weight: 500; }
+        .btn-google-style:hover { background-color: #1557b0; color: white; }
+    </style>
+</head>
+<body>
+    <div class="card shadow-lg login-card" style="width: 400px;">
+        <div class="login-header">
+            <h3>🔐 Staff Portal</h3>
+            <p class="mb-0 text-white-50">Please sign in to manage queue</p>
+        </div>
+        <div class="card-body p-5 bg-white">
+            <form method="post">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="alert alert-danger text-center p-2 mb-3 small">
+                    Invalid username or password.
+                </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-muted">Username</label>
+                    <input type="text" name="username" class="form-control form-control-lg" placeholder="Enter ID" required autofocus>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-muted">Password</label>
+                    <input type="password" name="password" class="form-control form-control-lg" placeholder="Enter Password" required>
+                </div>
+
+                <button type="submit" class="btn btn-google-style w-100 py-2 fs-5">Sign In</button>
+            </form>
+        </div>
+        <div class="card-footer text-center bg-light py-3">
+            <small class="text-muted">Smart Hospital System v2.0</small>
+        </div>
+    </div>
+</body>
+</html>

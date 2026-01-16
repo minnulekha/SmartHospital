@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Waiting Display</title>
+    <meta http-equiv="refresh" content="10"> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; }
+        
+        /* THEME ENGINE (CSS) */
+        /* Default (Green) */
+        .doctor-card { background: #1e1e1e; border-top: 5px solid #4caf50; border-radius: 15px; height: 100%; transition: transform 0.2s; }
+        .token-box { background: #4caf50; color: white; border-radius: 10px; padding: 15px; }
+        
+        /* 1. Cardiology (Red) */
+        .doctor-card[data-dept*="Cardio"] { border-top-color: #ef5350; }
+        .doctor-card[data-dept*="Cardio"] .token-box { background: #c62828; }
+        .doctor-card[data-dept*="Cardio"] .dept-badge { background: #ef5350; color: white; }
+
+        /* 2. Dental (Blue) */
+        .doctor-card[data-dept*="Dental"] { border-top-color: #42a5f5; }
+        .doctor-card[data-dept*="Dental"] .token-box { background: #1565c0; }
+        .doctor-card[data-dept*="Dental"] .dept-badge { background: #42a5f5; color: white; }
+
+        /* Typography */
+        .display-token { font-size: 5rem; font-weight: 700; line-height: 1; }
+        .dept-badge { font-size: 0.8rem; text-transform: uppercase; padding: 5px 10px; border-radius: 20px; background: #333; letter-spacing: 1px; }
+        
+        /* Animation */
+        .blink { animation: blinker 1.5s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0.5; } }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid py-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-5 border-bottom border-secondary pb-3">
+            <div>
+                <h1 class="fw-bold mb-0">🏥 LIVE QUEUE STATUS</h1>
+                <p class="text-muted mb-0">Real-time updates from all departments</p>
+            </div>
+            <div class="text-end">
+                <h3 id="clock" class="fw-bold">--:--</h3>
+                <small class="text-muted" id="date">Loading...</small>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            
+            {% for item in doctors %}
+            <div class="col-md-4 col-lg-3">
+                <div class="doctor-card shadow p-3" data-dept="{{ item.dept }}">
+                    
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 class="fw-bold mb-1">Dr. {{ item.doctor.user.last_name }}</h5>
+                            <span class="dept-badge">{{ item.dept }}</span>
+                        </div>
+                        {% if item.current_token != "--" %}
+                        <i class="fas fa-circle text-danger blink small"></i>
+                        {% else %}
+                        <i class="fas fa-circle text-muted small"></i>
+                        {% endif %}
+                    </div>
+
+                    <div class="token-box text-center mb-3">
+                        <small class="d-block text-white-50 text-uppercase">Now Serving</small>
+                        <div class="display-token">{{ item.current_token }}</div>
+                        <div class="fw-bold text-truncate">{{ item.current_name }}</div>
+                    </div>
+
+                    <div class="bg-dark rounded p-2">
+                        <small class="text-muted text-uppercase ms-1" style="font-size: 0.7rem;">Up Next</small>
+                        <ul class="list-unstyled mb-0 mt-2">
+                            {% for next_p in item.waiting %}
+                            <li class="d-flex justify-content-between px-2 py-1 border-bottom border-secondary" style="font-size: 0.9rem;">
+                                <span class="text-white">#{{ next_p.token_number }}</span>
+                                <span class="text-muted text-truncate" style="max-width: 100px;">{{ next_p.patient_name }}</span>
+                            </li>
+                            {% empty %}
+                            <li class="text-center text-muted small py-2">Queue Empty</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <h3 class="text-muted">ALL DOCTORS ARE OFFLINE</h3>
+                <p>Please check back later.</p>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+<script>
+    // Simple Clock
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        document.getElementById('date').innerText = now.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+</script>
+
+</body>
+</html>

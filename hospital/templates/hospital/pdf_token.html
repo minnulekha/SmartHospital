@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page { size: A5; margin: 1cm; }
+        body { font-family: Helvetica, sans-serif; color: #000; }
+        
+        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+        .title { font-size: 20px; font-weight: bold; }
+        
+        /* Simpler Box Design for PDF Compatibility */
+        .box-container { text-align: center; margin: 20px 0; }
+        
+        .token-box { 
+            border: 2px solid #000; 
+            padding: 10px; 
+            margin-bottom: 10px;
+        }
+        .token-title { font-size: 14px; text-transform: uppercase; margin-bottom: 5px; }
+        .token-num { font-size: 50px; font-weight: bold; }
+
+        .tracking-box { 
+            border: 1px dashed #000; 
+            padding: 10px; 
+            background-color: #f0f0f0; 
+        }
+        .tracking-id { font-size: 18px; font-weight: bold; font-family: Courier; letter-spacing: 2px; }
+
+        .info-table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        .info-table td { padding: 8px; border-bottom: 1px solid #ccc; font-size: 14px; }
+        
+        .footer { text-align: center; font-size: 10px; margin-top: 30px; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">SMART HOSPITAL</div>
+        <div>OPD Appointment Ticket</div>
+    </div>
+
+    <div class="box-container">
+        <div class="token-box">
+            <div class="token-title">Queue Token</div>
+            <div class="token-num">{{ appointment.token_number }}</div>
+        </div>
+
+        <div class="tracking-box">
+            <div class="token-title">Tracking ID</div>
+            <div class="tracking-id" style="color: #000000;">{{ appointment.ticket_id }}</div>
+        </div>
+    </div>
+
+    <table class="info-table">
+        <tr>
+            <td width="40%"><strong>Patient Name:</strong></td>
+            <td>{{ appointment.patient_name }}</td>
+        </tr>
+        <tr>
+            <td><strong>Doctor:</strong></td>
+            <td>Dr. {{ appointment.doctor.user.last_name }}</td>
+        </tr>
+        <tr>
+            <td><strong>Department:</strong></td>
+            <td>{{ appointment.doctor.department.name }}</td>
+        </tr>
+        <tr>
+            <td><strong>Est. Time:</strong></td>
+            <td>{{ appointment.estimated_start_time|time:"h:i A" }}</td>
+        </tr>
+        <tr>
+            <td><strong>Date:</strong></td>
+            <td>{{ appointment.booked_at|date:"M d, Y" }}</td>
+        </tr>
+    </table>
+
+    <div class="footer">
+        Please save this ticket. Use the Tracking ID to check your live status.
+    </div>
+</body>
+</html>
