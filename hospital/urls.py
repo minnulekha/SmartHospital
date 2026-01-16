@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     # 1. Public Pages
     path('', views.home, name='home'),
-    path('book/', views.patient_check_in, name='check_in'),
+    path('book/', views.patient_check_in, name='patient_check_in'),
     path('success/<int:appointment_id>/', views.booking_success, name='booking_success'),
     
     # 2. PATIENT DASHBOARD (Login & Menu)

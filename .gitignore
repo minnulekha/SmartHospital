@@ -1,0 +1,17 @@
+# Python temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment (Huge folder, never upload this)
+venv/
+env/
+.env
+
+# Database (Keep this local-only for security)
+db.sqlite3
+
+# OS generated files
+.DS_Store
+Thumbs.db

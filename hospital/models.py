@@ -1,13 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
 import uuid
+import math
 
 class Department(models.Model):
     name = models.CharField(max_length=100)
-    # Removed location_code as requested
     
     def __str__(self):
         return self.name
@@ -15,46 +13,32 @@ class Department(models.Model):
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    
+    # SMART FEATURE: Tracks average speed (default 15 mins)
     avg_consultation_time = models.IntegerField(default=15)
     
-    # NEW: Tracks if the doctor is currently in the cabin working
-    is_on_duty = models.BooleanField(default=False) 
+    # STATUS: Is the doctor currently working?
+    is_on_duty = models.BooleanField(default=False)
     
     def __str__(self):
         return f"Dr. {self.user.first_name} ({self.department.name})"
 
+    def update_average_time(self, actual_duration_minutes):
+        """
+        AI ALGORITHM: Recalculates doctor's average speed based on real performance.
+        Weighted Average: 70% historical data, 30% most recent patient.
+        """
+        if actual_duration_minutes < 1: return # Ignore accidental clicks
 
-# ... keep your Doctor and Department models same ...
-
-class Appointment(models.Model):
-    # Keep your existing fields
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    patient_name = models.CharField(max_length=100)
-    # ... other fields ...
-
-    # NEW: Unique Ticket ID (e.g., "20251020-A1B2")
-    ticket_id = models.CharField(max_length=20, unique=True, blank=True)
-    
-    # We still keep token_number for the "Queue Position" (1st, 2nd, 3rd)
-    token_number = models.IntegerField(default=0)
-    
-    status = models.CharField(max_length=20, default='waiting')
-    booked_at = models.DateTimeField(auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        # Generate Unique ID if it doesn't exist
-        if not self.ticket_id:
-            # Format: YYYYMMDD-XXXX (e.g., 20251020-9F3A)
-            today_str = timezone.now().strftime('%Y%m%d')
-            random_code = str(uuid.uuid4())[:4].upper()
-            self.ticket_id = f"{today_str}-{random_code}"
+        # Calculate new weighted average
+        new_avg = (self.avg_consultation_time * 0.7) + (actual_duration_minutes * 0.3)
         
-        super().save(*args, **kwargs)
+        # Enforce limits (Min 5 mins, Max 45 mins) to prevent errors
+        new_avg = max(5, min(45, new_avg))
+        
+        self.avg_consultation_time = math.ceil(new_avg)
+        self.save()
 
-    def __str__(self):
-        return f"{self.patient_name} - {self.ticket_id}"
-
-# 3. The Queue (Appointments)
 class Appointment(models.Model):
     STATUS_CHOICES = [
         ('waiting', 'Waiting'),
@@ -63,26 +47,29 @@ class Appointment(models.Model):
         ('cancelled', 'Cancelled'),
     ]
 
+    # Basic Info
     patient_name = models.CharField(max_length=100)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
     booked_at = models.DateTimeField(auto_now_add=True)
     
-    # The 'Smart' fields
-    estimated_start_time = models.DateTimeField(null=True, blank=True) 
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='waiting')
+    # Unique ID (e.g., 20251020-A1B2)
+    ticket_id = models.CharField(max_length=20, unique=True, blank=True)
     token_number = models.PositiveIntegerField(null=True, blank=True)
-    
-    # EXISTING FIELDS
-    patient_name = models.CharField(max_length=100)
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
-    booked_at = models.DateTimeField(auto_now_add=True)
-    estimated_start_time = models.DateTimeField(null=True, blank=True) 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='waiting')
-    token_number = models.PositiveIntegerField(null=True, blank=True)
 
-    # --- NEW FIELDS FOR AI DATA ---
+    # Smart Time Tracking Fields
+    estimated_start_time = models.DateTimeField(null=True, blank=True) 
     actual_start_time = models.DateTimeField(null=True, blank=True)
     actual_end_time = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # 1. Generate Unique Ticket ID if missing
+        if not self.ticket_id:
+            today_str = timezone.now().strftime('%Y%m%d')
+            random_code = str(uuid.uuid4())[:4].upper()
+            self.ticket_id = f"{today_str}-{random_code}"
+        
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Token {self.token_number} - {self.patient_name}"

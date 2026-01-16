@@ -1,68 +1,95 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Patient Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #f0f2f5; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .card-portal { max-width: 450px; width: 100%; border: none; border-radius: 20px; overflow: hidden; }
-        .portal-header { background: #1a73e8; padding: 40px 20px; text-align: center; color: white; }
-        .btn-google { background: white; color: #444; border: 1px solid #ddd; font-weight: 600; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        #dashboard-actions { display: none; } /* Hidden until logged in */
-    </style>
-</head>
-<body>
+{% extends 'hospital/base.html' %}
 
-<div class="card shadow-lg card-portal">
-    <div class="portal-header">
-        <i class="fas fa-hospital-user fa-4x mb-3"></i>
-        <h3 id="welcome-text">Patient Portal</h3>
-        <p class="mb-0 text-white-50">Manage your hospital visit</p>
-    </div>
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
     
-    <div class="card-body p-4 bg-white">
+    <div class="card shadow-lg border-0 rounded-4" style="width: 100%; max-width: 500px; overflow: hidden;">
         
-        <div id="login-section">
-            <p class="text-center text-muted mb-4">Please verify identity to access dashboard.</p>
-            <button id="google-login-btn" type="button" class="btn btn-google w-100 rounded-pill shadow-sm">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="24">
-                Continue with Google
-            </button>
+        <div class="portal-header text-center p-4" style="background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white;">
+            <i class="fas fa-hospital-user fa-4x mb-3"></i>
+            <h3 id="welcome-text" class="fw-bold">Patient Portal</h3>
+            <p class="mb-0 text-white-50">Manage your hospital visit</p>
         </div>
-
-        <div id="dashboard-actions">
-            <div class="d-grid gap-3">
-                <a href="{% url 'check_in' %}" class="btn btn-primary btn-lg rounded-pill shadow-sm py-3">
-                    <i class="fas fa-plus-circle me-2"></i> Book New Token
-                </a>
-
-                <div class="text-center text-muted small py-2">- OR -</div>
-
-                <form method="post">
-                    {% csrf_token %}
-                    <label class="fw-bold text-muted small ms-2 mb-1">ALREADY BOOKED?</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light"><i class="fas fa-barcode"></i></span>
-                        <input type="text" name="ticket_id" class="form-control" placeholder="e.g. 20250116-X7Z9" required>
-                        <button type="submit" class="btn btn-dark">Track Status</button>
-                    </div>
-                    {% if error %}
-                    <div class="alert alert-danger mt-3 small py-2 text-center">
-                        <i class="fas fa-exclamation-circle me-1"></i> {{ error }}
-                    </div>
-                    {% endif %}
-                </form>
-            </div>
+        
+        <div class="card-body p-4 bg-white">
             
-            <div class="text-center mt-4 border-top pt-3">
-                <button id="logout-btn" class="btn btn-link text-danger btn-sm text-decoration-none">
-                    <i class="fas fa-sign-out-alt"></i> Sign Out
+            <div id="login-section">
+                <p class="text-center text-muted mb-3 small">Sign in to view your history and book tokens</p>
+                <button id="google-login-btn" type="button" class="btn btn-outline-dark w-100 py-2 rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
+                    <span>Sign in with Google</span>
                 </button>
+                
+                <div class="position-relative my-4">
+                    <hr class="text-muted opacity-25">
+                    <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">OR</span>
+                </div>
             </div>
-        </div>
 
+            <div id="dashboard-actions" style="display: none;">
+                <div class="d-grid gap-3 mb-4">
+                    <a href="{% url 'patient_check_in' %}" class="btn btn-primary btn-lg rounded-pill shadow-sm py-3 fw-bold">
+                        <i class="fas fa-plus-circle me-2"></i> Book New Token
+                    </a>
+                </div>
+
+                <div class="mt-4">
+                    <h6 class="fw-bold text-muted small mb-3 text-uppercase letter-spacing-1">My Appointment History</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover border-top">
+                            <tbody id="history-list">
+                                {% for app in history %}
+                                <tr>
+                                    <td class="py-2">
+                                        <div class="fw-bold small">Dr. {{ app.doctor.user.last_name }}</div>
+                                        <div class="text-muted" style="font-size: 0.7rem;">{{ app.booked_at|date:"d M Y" }}</div>
+                                    </td>
+                                    <td class="text-end py-2">
+                                        <span class="badge rounded-pill {% if app.status == 'completed' %}bg-success{% else %}bg-warning text-dark{% endif %}" style="font-size: 0.65rem;">
+                                            {{ app.status|title }}
+                                        </span>
+                                        {% if app.status == 'waiting' or app.status == 'in_consultation' %}
+                                            <a href="{% url 'patient_live_status' app.id %}" class="d-block small text-primary mt-1" style="font-size: 0.65rem;">Track Live</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted small py-3">No past appointments found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="text-center mt-3 pt-3 border-top">
+                    <button id="logout-btn" class="btn btn-link text-danger btn-sm text-decoration-none fw-bold">
+                        <i class="fas fa-sign-out-alt me-1"></i> Sign Out
+                    </button>
+                </div>
+                <hr class="text-muted opacity-25 my-4">
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <label class="fw-bold text-muted small ms-1 mb-2">QUICK TRACK (ENTER TICKET ID)</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text bg-light border-end-0"><i class="fas fa-qrcode text-muted"></i></span>
+                    <input type="text" name="ticket_id" class="form-control border-start-0" 
+                           placeholder="e.g. 20251020-A1B2" 
+                           style="text-transform: uppercase; letter-spacing: 1px;" required>
+                    <button type="submit" class="btn btn-dark fw-bold px-4">Track</button>
+                </div>
+                
+                {% if error %}
+                <div class="alert alert-danger mt-3 small py-2 text-center rounded-3">
+                    <i class="fas fa-exclamation-circle me-1"></i> {{ error }}
+                </div>
+                {% endif %}
+            </form>
+
+        </div>
     </div>
 </div>
 
@@ -70,7 +97,6 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  // YOUR KEYS
   const firebaseConfig = {
     apiKey: "AIzaSyAPZUgQM99l10PBbx0nXg4SuIZ_dhXp2Q4",
     authDomain: "smarthospital-63b2c.firebaseapp.com",
@@ -81,39 +107,50 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  // Elements
   const loginSection = document.getElementById('login-section');
   const dashboardSection = document.getElementById('dashboard-actions');
   const welcomeText = document.getElementById('welcome-text');
   const googleBtn = document.getElementById('google-login-btn');
   const logoutBtn = document.getElementById('logout-btn');
 
-  // 1. AUTO-CHECK LOGIN
   onAuthStateChanged(auth, (user) => {
       if (user) {
           showDashboard(user);
+      } else {
+          showLogin();
       }
   });
 
-  // 2. LOGIN BUTTON
   googleBtn.addEventListener('click', () => {
     signInWithPopup(auth, provider)
       .then((result) => showDashboard(result.user))
-      .catch((error) => alert(error.message));
+      .catch((error) => console.error(error.message));
   });
 
-  // 3. LOGOUT BUTTON
   logoutBtn.addEventListener('click', () => {
-    signOut(auth).then(() => location.reload());
+    signOut(auth).then(() => {
+        // Clear email from URL on logout
+        window.location.href = window.location.pathname;
+    });
   });
 
-  // 4. SWITCH UI FUNCTION
   function showDashboard(user) {
     loginSection.style.display = 'none';
     dashboardSection.style.display = 'block';
-    welcomeText.innerText = "Hi, " + user.displayName.split(' ')[0]; 
+    welcomeText.innerText = "Hi, " + user.displayName.split(' ')[0] + "!"; 
+
+    // Redirect with email to fetch history if not already present
+    const urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.has('email')) {
+        window.location.search = `?email=${encodeURIComponent(user.email)}`;
+    }
+  }
+
+  function showLogin() {
+    loginSection.style.display = 'block';
+    dashboardSection.style.display = 'none';
+    welcomeText.innerText = "Patient Portal";
   }
 </script>
 
-</body>
-</html>
+{% endblock %}

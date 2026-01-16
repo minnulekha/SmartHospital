@@ -1,0 +1,10 @@
+# Ignore the huge virtual environment folder
+venv/
+
+# Ignore compiled python files
+__pycache__/
+*.pyc
+
+# Ignore git internal files
+.git/
+.gitignore

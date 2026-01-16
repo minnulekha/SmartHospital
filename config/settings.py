@@ -129,3 +129,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # ALLOW GOOGLE LOGIN POPUPS
 # ALLOW GOOGLE LOGIN POPUPS
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
+
+# Mandatory for Google Cloud Run
+CSRF_TRUSTED_ORIGINS = ['https://*.run.app']
