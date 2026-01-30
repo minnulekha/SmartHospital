@@ -1,7 +1,7 @@
 # Smart Hospital
 
-## Basic Details
-### Team Name: Code Craft
+## Techsprint
+### Team Name: ThinkByte
 
 ### Team Members
 - **Minnu Lekha V G** - LBSITW
