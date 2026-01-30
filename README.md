@@ -1,92 +1,121 @@
-# Smart Hospital
+# 🏥 Smart Hospital: AI-Powered Queue Management
+**Team Name:** ThinkByte | **Event:** Techsprint 2026
 
-## Techsprint
-### Team Name: ThinkByte
-
-### Team Members
-- **Minnu Lekha V G** - LBSITW
-- **Devu L S** - LBSITW
-- **Rudra Lakshmi B P** - LBSITW
-- **Abhirami S** - LBSITW
-
-### Hosted Project Link
-[https://smart-hospital-709984752011.asia-south1.run.app](https://smart-hospital-709984752011.asia-south1.run.app)
-
-### Project Description
-Smart Hospital is an AI-powered queue management system designed to eliminate physical waiting lines. It provides patients with live wait-time estimations, dynamic travel alerts via Google Maps, and a digital ticketing system to ensure a seamless healthcare experience.
-
-### The Problem
-Traditional hospital waiting rooms are overcrowded, leading to patient frustration, increased risk of infection, and uncertainty regarding consultation times.
-
-### The Solution
-Our project, **"Smart Hospital,"** uses real-time data synchronization via Firebase and Google Cloud to allow patients to track their queue position from home and arrive just in time for their appointment.
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Project-brightgreen)](https://smart-hospital-709984752011.asia-south1.run.app)
+[![Python](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/)
+[![Framework](https://img.shields.io/badge/Framework-Django-092e20.svg)](https://www.djangoproject.com/)
 
 ---
 
-## Technical Details
+## 📌 Project Overview
+**Smart Hospital** is an innovative AI-driven solution designed to eliminate physical waiting lines in healthcare facilities. By synchronizing real-time data, the system empowers patients to manage their time effectively, reducing hospital congestion and improving the overall patient experience.
 
-### Technologies/Components Used
+### ⚠️ The Problem
+Traditional hospital waiting rooms are often overcrowded, leading to:
+* High patient frustration and "waiting room anxiety."
+* Increased risk of cross-infection in confined spaces.
+* Total uncertainty regarding actual consultation times.
 
-#### Software
-- **Languages:** Python 3.13, HTML, CSS, JavaScript
-- **Frameworks:** Django (Full Stack)
-- **Libraries:** Bootstrap 5, xhtml2pdf
-- **Google Technologies:** Google Cloud Run, Firebase Realtime Database, Firebase Authentication, Google Maps Platform
-- **Tools:** Visual Studio Code, Google Cloud SDK
+### ✅ The Solution
+Our platform leverages **Firebase Realtime Database** and **Google Cloud** to provide:
+* **Live Wait-Time Estimations:** Patients know exactly when to leave home.
+* **Dynamic Travel Alerts:** Integration with Google Maps Platform to calculate commute times.
+* **Digital Ticketing:** A seamless, paperless entry system for appointments.
 
-### Implementation
+---
 
-#### Software
-- **Installation:**
-  ```bash
-  pip install django firebase-admin google-cloud-run
+## 🛠️ Technical Stack
+
+| Category | Technologies |
+| :--- | :--- |
+| **Languages** | Python 3.13, JavaScript (ES6+), HTML5, CSS3 |
+| **Backend** | Django (Full Stack Framework) |
+| **Database** | Firebase Realtime Database |
+| **Cloud/DevOps** | Google Cloud Run, Firebase Auth, Google Cloud SDK |
+| **APIs** | Google Maps Platform (Distance Matrix & JavaScript API) |
+| **Styling** | Bootstrap 5 |
+
+---
+
+## 🚀 Key Features
+
+* **Intelligent Queue Logic:** AI-based predictive logic to estimate the duration of each consultation.
+* **Real-time Synchronization:** Instant updates across Doctor and Patient dashboards.
+* **Location-Aware Alerts:** Notifies patients when they need to start traveling based on current traffic.
+* **Secure Authentication:** Managed via Firebase for robust user data protection.
+* **Automated PDF Reports:** Generates digital tokens and summaries using `xhtml2pdf`.
+
+---
+
+## 📸 System Preview
+
+### Patient Experience
+| Digital Token & Tracking | Live Queue Status |
+| :---: | :---: |
+| ![Patient Portal](https://github.com/user-attachments/assets/cc7d7b08-5002-41a0-8475-835590aab36d) | ![Live Tracking](https://github.com/user-attachments/assets/6dc596f1-dc8f-4fe0-87ae-90957e04b9df) |
+
+### Administrative & Doctor Portals
+| Doctor Dashboard | Queue Management |
+| :---: | :---: |
+| ![Doctor Dashboard](https://github.com/user-attachments/assets/261f406f-ca22-46dc-8038-1ce7062a76c0) | ![Queue Status](https://github.com/user-attachments/assets/e2557680-7e47-46ac-a847-f54af7e2a72a) |
+
+---
+
+## ⚙️ Installation & Deployment
+
+### Local Setup
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/your-username/smart-hospital.git](https://github.com/your-username/smart-hospital.git)
+   cd smart-hospital
 
 ```
 
-* **Run:**
+2. **Install dependencies:**
+```bash
+pip install django firebase-admin google-cloud-run xhtml2pdf
+
+```
+
+
+3. **Run the server:**
 ```bash
 python manage.py runserver
 
 ```
 
 
-* **Deploy:**
+
+### Cloud Deployment
+
+Deploy to Google Cloud Run effortlessly:
+
 ```bash
 gcloud run deploy smart-hospital --source .
 
 ```
 
+---
 
+## 🎬 Project Demo
+
+📺 **[Watch the End-to-End Workflow](https://drive.google.com/file/d/10ka-ayh--1ISkIG0CGJdMacRefcYy4mo/view?usp=drive_link)**
+
+The demo covers:
+
+1. Patient booking a digital token.
+2. Real-time travel alerts via Google Maps.
+3. Doctor backend managing the live queue status.
 
 ---
 
-## Project Documentation
+## 👥 The Team: ThinkByte
 
-### Software
-
-* **Screenshots**
-* * **Build Photos**<img width="1142" height="670" alt="image" src="https://github.com/user-attachments/assets/dd2555e2-7a73-41f3-905d-17a4aa576bda" />
-
-* **Final Product:** <img width="1346" height="589" alt="image" src="https://github.com/user-attachments/assets/63b5dfb1-7639-43c6-b2e7-edf13c17835f" />
-* **Patient Dashboard:** <img width="1346" height="587" alt="Patient Portal" src="https://github.com/user-attachments/assets/cc7d7b08-5002-41a0-8475-835590aab36d" />
- *<img width="1345" height="596" alt="Live Tracking" src="https://github.com/user-attachments/assets/6dc596f1-dc8f-4fe0-87ae-90957e04b9df" />
-
-* **Live Queue Display:**<img width="1344" height="592" alt="Live Queue Status Page 1" src="https://github.com/user-attachments/assets/e2557680-7e47-46ac-a847-f54af7e2a72a" />
-*  <img width="1348" height="585" alt="Live Queue Status Page 2" src="https://github.com/user-attachments/assets/d408ef2e-3d0b-421e-a18d-31a425575e64" />
-
-* **Doctor Portal:** <img width="1356" height="593" alt="Doctor Dashboard" src="https://github.com/user-attachments/assets/261f406f-ca22-46dc-8038-1ce7062a76c0" />
-
-### Project Demo
-
-* **Video:** [[About Project]](https://drive.google.com/file/d/10ka-ayh--1ISkIG0CGJdMacRefcYy4mo/view?usp=drive_link)
-* **Description:** This video demonstrates the end-to-end flow of the Smart Hospital system—from a patient booking a digital token and receiving a Google Maps travel alert, to the doctor managing the live queue via the backend dashboard.
+* **Minnu Lekha V G** (LBSITW): Backend Development, Google Cloud Integration, AI Predictive Logic.
+* **Devu L S** (LBSITW): Frontend Design & UX/UI Implementation.
+* **Rudra Lakshmi B P** (LBSITW): Documentation & Database Schema Design.
+* **Abhirami S** (LBSITW): Quality Assurance, Bug Fixing, & Presentation.
 
 ---
 
-## Team Contributions
-
-* **Minnu Lekha V G:** Backend development, Google Cloud integration, AI predictive logic.
-* **Devu L S:** Frontend design and UI implementation.
-* **Rudra Lakshmi B P:** Documentation, database schema design.
-* **Abhirami S:** Testing, bug fixing, and presentation prep.
-
+© 2026 Team ThinkByte | LBS Institute of Technology for Women
