@@ -80,7 +80,7 @@ gcloud run deploy smart-hospital --source .
 
 ### Project Demo
 
-* **Video:** [Insert Drive/YouTube Link]
+* **Video:** [[Insert Drive/YouTube Link]](https://drive.google.com/file/d/10ka-ayh--1ISkIG0CGJdMacRefcYy4mo/view?usp=drive_link)
 * **Description:** This video demonstrates the end-to-end flow of the Smart Hospital system—from a patient booking a digital token and receiving a Google Maps travel alert, to the doctor managing the live queue via the backend dashboard.
 
 ---
