@@ -114,8 +114,8 @@ The demo covers:
 ## 👥 The Team: ThinkByte
 
 * **Minnu Lekha V G** (LBSITW): Backend Development, Google Cloud Integration, AI Predictive Logic.
-* **Devu L S** (LBSITW): Frontend Design & UX/UI Implementation.
-* **Rudra Lakshmi B P** (LBSITW): Documentation & Database Schema Design.
+* **Devu L S** (LBSITW): Frontend Documentation & Database Schema Design.
+* **Rudra Lakshmi B P** (LBSITW): Design & UX/UI Implementation.
 * **Abhirami S** (LBSITW): Quality Assurance, Bug Fixing, & Presentation.
 
 ---
