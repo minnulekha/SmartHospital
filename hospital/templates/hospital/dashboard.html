@@ -7,17 +7,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body { background-color: #f8f9fa; }
-        .card-dash { border: none; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card-dash { border: none; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); min-height: 350px; }
         .btn-call { height: 50px; font-size: 1.2rem; font-weight: bold; }
+        .now-consulting-body { display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; }
     </style>
 </head>
 <body>
 
 <nav class="navbar navbar-dark bg-primary mb-4">
     <div class="container">
-        <span class="navbar-brand mb-0 h1"><i class="fas fa-user-md me-2"></i>Dr. {{ doctor.user.last_name }}</span>
+        <span class="navbar-brand mb-0 h1">
+            <i class="fas fa-user-md me-2"></i>Dr. {% if doctor.user.first_name %}{{ doctor.user.first_name }}{% else %}{{ doctor.user.username }}{% endif %}
+        </span>
         <div class="d-flex gap-2">
-            
             <a href="{% url 'toggle_duty' %}" class="btn {% if doctor.is_on_duty %}btn-light text-primary{% else %}btn-danger{% endif %} fw-bold">
                 {% if doctor.is_on_duty %}
                     <i class="fas fa-toggle-on me-1"></i> You are ONLINE
@@ -35,7 +37,6 @@
 </nav>
 
 <div class="container">
-    
     {% if not doctor.is_on_duty %}
     <div class="alert alert-danger text-center">
         <h4>🔴 You are currently OFFLINE</h4>
@@ -47,19 +48,24 @@
         <div class="col-md-5 mb-4">
             <div class="card card-dash bg-white h-100">
                 <div class="card-header bg-white border-0 fw-bold text-muted">NOW CONSULTING</div>
-                <div class="card-body text-center d-flex flex-col justify-content-center align-items-center">
+                <div class="card-body now-consulting-body text-center">
                     
                     {% if current_patient %}
-                        <h1 class="display-1 fw-bold text-primary mb-0">{{ current_patient.token_number }}</h1>
-                        <p class="text-muted fs-5">{{ current_patient.patient_name }}</p>
+                        <div class="mt-3">
+                            <h1 class="display-1 fw-bold text-primary mb-0">{{ current_patient.token_number }}</h1>
+                            <p class="text-muted fs-4">{{ current_patient.patient_name }}</p>
+                        </div>
                         
-                        <div class="d-grid gap-2 w-100 mt-4">
-                            <a href="{% url 'complete_appointment' current_patient.id %}" class="btn btn-outline-success">
-                                <i class="fas fa-check"></i> Complete & Wait
+                        <div class="d-grid gap-2 w-100 mt-auto">
+                            <a href="{% url 'complete_appointment' current_patient.id %}" class="btn btn-outline-success py-3 fw-bold">
+                                <i class="fas fa-check me-2"></i>Complete & Wait
                             </a>
                         </div>
                     {% else %}
-                        <h3 class="text-muted opacity-50">Room Empty</h3>
+                        <div class="my-auto">
+                            <i class="fas fa-user-clock fa-3x text-light mb-3"></i>
+                            <h3 class="text-muted opacity-50">Room Empty</h3>
+                        </div>
                     {% endif %}
 
                 </div>

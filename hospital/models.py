@@ -49,6 +49,8 @@ class Appointment(models.Model):
 
     # Basic Info
     patient_name = models.CharField(max_length=100)
+    # New Field added to fix the FieldError and enable history tracking
+    patient_email = models.EmailField(null=True, blank=True) 
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
     booked_at = models.DateTimeField(auto_now_add=True)
     
@@ -61,6 +63,9 @@ class Appointment(models.Model):
     estimated_start_time = models.DateTimeField(null=True, blank=True) 
     actual_start_time = models.DateTimeField(null=True, blank=True)
     actual_end_time = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Token {self.token_number} - {self.patient_name}"
 
     def save(self, *args, **kwargs):
         # 1. Generate Unique Ticket ID if missing

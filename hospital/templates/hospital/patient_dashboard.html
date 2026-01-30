@@ -41,14 +41,14 @@
                                 {% for app in history %}
                                 <tr>
                                     <td class="py-2">
-                                        <div class="fw-bold small">Dr. {{ app.doctor.user.last_name }}</div>
+                                        <div class="fw-bold small">Dr. {{ app.doctor.user.first_name|default:app.doctor.user.username }}</div>
                                         <div class="text-muted" style="font-size: 0.7rem;">{{ app.booked_at|date:"d M Y" }}</div>
                                     </td>
                                     <td class="text-end py-2">
                                         <span class="badge rounded-pill {% if app.status == 'completed' %}bg-success{% else %}bg-warning text-dark{% endif %}" style="font-size: 0.65rem;">
                                             {{ app.status|title }}
                                         </span>
-                                        {% if app.status == 'waiting' or app.status == 'in_consultation' %}
+                                        {% if app.status != 'completed' %}
                                             <a href="{% url 'patient_live_status' app.id %}" class="d-block small text-primary mt-1" style="font-size: 0.65rem;">Track Live</a>
                                         {% endif %}
                                     </td>
@@ -129,7 +129,6 @@
 
   logoutBtn.addEventListener('click', () => {
     signOut(auth).then(() => {
-        // Clear email from URL on logout
         window.location.href = window.location.pathname;
     });
   });
@@ -139,9 +138,9 @@
     dashboardSection.style.display = 'block';
     welcomeText.innerText = "Hi, " + user.displayName.split(' ')[0] + "!"; 
 
-    // Redirect with email to fetch history if not already present
+    // Redirect with email to fetch history if the URL doesn't have it yet
     const urlParams = new URLSearchParams(window.location.search);
-    if (!urlParams.has('email')) {
+    if (urlParams.get('email') !== user.email) {
         window.location.search = `?email=${encodeURIComponent(user.email)}`;
     }
   }
@@ -152,5 +151,4 @@
     welcomeText.innerText = "Patient Portal";
   }
 </script>
-
 {% endblock %}
