@@ -65,7 +65,8 @@ gcloud run deploy smart-hospital --source .
 ### Software
 
 * **Screenshots**
-* **Patient Dashboard:** <img width="1327" height="587" alt="Screenshot 2026-01-16 233004" src="https://github.com/user-attachments/assets/f0824c58-3045-4158-8269-27967b7bb6ad" />
+* **Patient Dashboard:** <img width="1348" height="589" alt="image" src="https://github.com/user-attachments/assets/b5fdb73d-f837-47ef-95c6-25d61e154590" />
+
 
 * **Live Queue Display:** <img width="1356" height="561" alt="Screenshot 2026-01-16 232931" src="https://github.com/user-attachments/assets/97091d86-dbec-4d7f-8904-957a44a87bb9" />
 
