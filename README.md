@@ -50,14 +50,16 @@ Our platform leverages **Firebase Realtime Database** and **Google Cloud** to pr
 ## 📸 System Preview
 
 ### Patient Experience
-| Digital Token & Tracking | Live Queue Status |
+| Digital Token & Portal | Real-time Travel Tracking |
 | :---: | :---: |
-| ![Patient Portal](https://github.com/user-attachments/assets/cc7d7b08-5002-41a0-8475-835590aab36d) | ![Live Tracking](https://github.com/user-attachments/assets/6dc596f1-dc8f-4fe0-87ae-90957e04b9df) |
+| ![Patient Portal](https://github.com/user-attachments/assets/cc7d7b08-5002-41a0-8475-835590aab36d) | ![Live Tracking](https://github.com/user-attachments/assets/a6f499b8-fa6f-4ad3-b30e-72e5b3045810) |
 
 ### Administrative & Doctor Portals
-| Doctor Dashboard | Queue Management |
+| Doctor Management Dashboard | Live Queue Display |
 | :---: | :---: |
-| ![Doctor Dashboard](https://github.com/user-attachments/assets/261f406f-ca22-46dc-8038-1ce7062a76c0) | ![Queue Status](https://github.com/user-attachments/assets/e2557680-7e47-46ac-a847-f54af7e2a72a) |
+| ![Doctor Dashboard](https://github.com/user-attachments/assets/261f406f-ca22-46dc-8038-1ce7062a76c0) | ![Queue Status 1](https://github.com/user-attachments/assets/10a9b25b-de7f-4e15-9dfd-a927f54b8ab1) |
+
+> **Additional View:** [Live Queue Status - Patient View](https://github.com/user-attachments/assets/639d3b17-872a-4668-803d-4f746d394951)
 
 ---
 
