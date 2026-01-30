@@ -65,9 +65,12 @@ gcloud run deploy smart-hospital --source .
 ### Software
 
 * **Screenshots**
-* **Patient Dashboard:** [Insert Screenshot Link]
-* **Live Queue Display:** [Insert Screenshot Link]
-* **Doctor Portal:** [Insert Screenshot Link]
+* **Patient Dashboard:** <img width="1327" height="587" alt="Screenshot 2026-01-16 233004" src="https://github.com/user-attachments/assets/f0824c58-3045-4158-8269-27967b7bb6ad" />
+
+* **Live Queue Display:** <img width="1356" height="561" alt="Screenshot 2026-01-16 232931" src="https://github.com/user-attachments/assets/97091d86-dbec-4d7f-8904-957a44a87bb9" />
+
+* **Doctor Portal:** <img width="1356" height="589" alt="image" src="https://github.com/user-attachments/assets/9baeecfc-b78b-45a1-b314-1fe9ca6ba154" />
+
 
 
 * **Diagrams**
@@ -80,7 +83,7 @@ gcloud run deploy smart-hospital --source .
 
 ### Project Demo
 
-* **Video:** [[Insert Drive/YouTube Link]](https://drive.google.com/file/d/10ka-ayh--1ISkIG0CGJdMacRefcYy4mo/view?usp=drive_link)
+* **Video:** [[About Project]](https://drive.google.com/file/d/10ka-ayh--1ISkIG0CGJdMacRefcYy4mo/view?usp=drive_link)
 * **Description:** This video demonstrates the end-to-end flow of the Smart Hospital system—from a patient booking a digital token and receiving a Google Maps travel alert, to the doctor managing the live queue via the backend dashboard.
 
 ---
