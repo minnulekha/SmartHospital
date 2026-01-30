@@ -92,8 +92,3 @@ gcloud run deploy smart-hospital --source .
 * **Rudra Lakshmi B P:** Documentation, database schema design.
 * **Abhirami S:** Testing, bug fixing, and presentation prep.
 
-```
-
-**Would you like me to help you write a script for your 3-minute video presentation to match this README?**
-
-```
