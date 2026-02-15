@@ -1,10 +1,16 @@
-# 🏥 Smart Hospital: AI-Powered Queue Management 
-https://smart-hospital-709984752011.asia-south1.run.app/<br>
-**Team Name:** ThinkByte | **Event:** Techsprint 2026
+# 🏥 Smart Hospital: AI-Powered Queue Management
 
+🏆 **TechSprint 2026 Hackathon Winner — Google Developer Groups (GDG LBSITW)**
+
+https://smart-hospital-709984752011.asia-south1.run.app/
+
+**Team Name:** ThinkByte | **Event:** TechSprint 2026
+
+[![Achievement](https://img.shields.io/badge/Award-🏆%20Winner%20TechSprint%202026-gold)](#)
 [![Live Demo](https://img.shields.io/badge/Demo-Live%20Project-brightgreen)](https://smart-hospital-709984752011.asia-south1.run.app)
 [![Python](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/)
 [![Framework](https://img.shields.io/badge/Framework-Django-092e20.svg)](https://www.djangoproject.com/)
+
 
 ---
 
@@ -24,6 +30,20 @@ Our platform leverages **Firebase Realtime Database** and **Google Cloud** to pr
 * **Digital Ticketing:** A seamless, paperless entry system for appointments.
 
 ---
+
+## 🏆 Hackathon Achievement
+
+**Smart Hospital** secured **1st Place (Winner)** at the **TechSprint 2026 Hackathon** conducted by  
+**Google Developer Groups (GDG) – LBS Institute of Technology for Women**.
+
+The project was recognized for:
+- Practical real-world healthcare impact
+- Intelligent queue prediction logic
+- Seamless real-time synchronization
+- Effective use of Google Cloud & Firebase ecosystem
+
+> The judges appreciated the solution’s ability to reduce hospital congestion and improve patient experience using predictive technology.
+
 
 ## 🛠️ Technical Stack
 
