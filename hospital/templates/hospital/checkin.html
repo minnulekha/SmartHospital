@@ -10,6 +10,9 @@
         body { background: #f0f2f5; }
         .card-booking { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; }
         .booking-header { background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); padding: 40px; color: white; text-align: center; }
+        .input-group-text { border-right: none; }
+        .form-control, .form-select { border-left: none; }
+        .form-control:focus, .form-select:focus { box-shadow: none; border-color: #dee2e6; }
     </style>
 </head>
 <body>
@@ -29,14 +32,26 @@
                             {% csrf_token %}
                             
                             <div class="mb-4">
-                                <label class="form-label fw-bold text-muted small">PATIENT NAME</label>
-                                {{ form.patient_name }}
+                                <label class="form-label fw-bold text-muted small">EMAIL ADDRESS</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-envelope text-muted"></i></span>
+                                    {{ form.patient_email }}
                                 </div>
+                                <div class="form-text" style="font-size: 0.7rem;">Use your Google email to track history.</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-muted small">PATIENT NAME</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-user text-muted"></i></span>
+                                    {{ form.patient_name }}
+                                </div>
+                            </div>
 
                             <div class="mb-4">
                                 <label class="form-label fw-bold text-muted small">DEPARTMENT</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="fas fa-building"></i></span>
+                                    <span class="input-group-text bg-light"><i class="fas fa-building text-muted"></i></span>
                                     <select id="department-select" class="form-select" required>
                                         <option value="">-- Select Department --</option>
                                         {% for dept in departments %}
@@ -49,7 +64,7 @@
                             <div class="mb-4">
                                 <label class="form-label fw-bold text-muted small">AVAILABLE DOCTOR</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="fas fa-user-md"></i></span>
+                                    <span class="input-group-text bg-light"><i class="fas fa-user-md text-muted"></i></span>
                                     <select id="id_doctor" name="doctor" class="form-select" disabled required>
                                         <option value="">-- First Select Department --</option>
                                     </select>
@@ -67,7 +82,9 @@
                 </div>
 
                 <div class="text-center mt-4">
-                    <a href="{% url 'home' %}" class="text-muted text-decoration-none">Back to Home</a>
+                    <a href="{% url 'home' %}" class="text-muted text-decoration-none small">
+                        <i class="fas fa-chevron-left me-1"></i> Back to Home
+                    </a>
                 </div>
 
             </div>
@@ -76,24 +93,21 @@
 
     <script>
         $(document).ready(function() {
-            // 1. Listen for Department Change
             $('#department-select').change(function() {
                 var deptId = $(this).val();
                 var doctorSelect = $('#id_doctor');
                 var submitBtn = $('#submit-btn');
                 
-                // Reset Doctor Dropdown
                 doctorSelect.empty().append('<option value="">Loading...</option>').prop('disabled', true);
                 submitBtn.prop('disabled', true);
                 $('#doctor-status').hide();
 
                 if (deptId) {
                     $.ajax({
-                        url: '{% url "get_doctors" %}', // Uses Django URL tag
+                        url: '{% url "get_doctors" %}',
                         data: { 'department_id': deptId },
                         success: function(data) {
                             doctorSelect.empty();
-                            
                             if (data.doctors.length > 0) {
                                 doctorSelect.append('<option value="">-- Select Doctor --</option>');
                                 data.doctors.forEach(function(doc) {
@@ -104,24 +118,41 @@
                                 doctorSelect.append('<option value="">No Doctors Available</option>');
                                 $('#doctor-status').show();
                             }
-                        },
-                        error: function() {
-                            alert("Error fetching doctors.");
                         }
                     });
-                } else {
-                    doctorSelect.empty().append('<option value="">-- First Select Department --</option>');
                 }
             });
 
-            // 2. Enable Button when Doctor is Selected
             $('#id_doctor').change(function() {
-                if($(this).val()) {
-                    $('#submit-btn').prop('disabled', false);
-                } else {
-                    $('#submit-btn').prop('disabled', true);
-                }
+                $('#submit-btn').prop('disabled', !$(this).val());
             });
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPZUgQM99l10PBbx0nXg4SuIZ_dhXp2Q4",
+            authDomain: "smarthospital-63b2c.firebaseapp.com",
+            projectId: "smarthospital-63b2c",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const nameField = document.querySelector('input[name="patient_name"]');
+                const emailField = document.querySelector('input[name="patient_email"]');
+                
+                if(nameField && !nameField.value) nameField.value = user.displayName;
+                if(emailField && !emailField.value) {
+                    emailField.value = user.email;
+                    emailField.readOnly = true; 
+                }
+            }
         });
     </script>
 </body>
