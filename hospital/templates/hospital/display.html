@@ -7,11 +7,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <style>
-        body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
         
         /* THEME ENGINE (CSS) */
-        /* Default Styles */
-        .doctor-card { background: #1e1e1e; border-top: 5px solid #6c757d; border-radius: 15px; height: 100%; transition: transform 0.2s; }
+        .doctor-card { background: #1e1e1e; border-top: 5px solid #6c757d; border-radius: 15px; height: 100%; transition: transform 0.2s; display: flex; flex-direction: column; }
         .token-box { background: #333; color: white; border-radius: 10px; padding: 15px; }
         .dept-badge { font-size: 0.8rem; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; letter-spacing: 1px; font-weight: bold; }
 
@@ -45,8 +44,32 @@
         .doctor-card[data-dept*="Uro"] .token-box { background: #1976d2; }
         .doctor-card[data-dept*="Uro"] .dept-badge { background: #42a5f5; color: white; }
 
+        /* 7. Physical Therapy (Teal/Cyan) */
+        .doctor-card[data-dept*="Physical"] { border-top-color: #00bcd4; }
+        .doctor-card[data-dept*="Physical"] .token-box { background: #0097a7; }
+        .doctor-card[data-dept*="Physical"] .dept-badge { background: #00bcd4; color: white; }
+
+        /* 8. Oncology (Deep Indigo) */
+        .doctor-card[data-dept*="Onco"] { border-top-color: #3f51b5; }
+        .doctor-card[data-dept*="Onco"] .token-box { background: #303f9f; }
+        .doctor-card[data-dept*="Onco"] .dept-badge { background: #3f51b5; color: white; }
+
+        /* 9. Radiology (Deep Purple) */
+        .doctor-card[data-dept*="Radio"] { border-top-color: #673ab7; }
+        .doctor-card[data-dept*="Radio"] .token-box { background: #512da8; }
+        .doctor-card[data-dept*="Radio"] .dept-badge { background: #673ab7; color: white; }
+
+        /* 10. Anesthesiology (Deep Blue/Slate) */
+        .doctor-card[data-dept*="Anes"] { border-top-color: #455a64; }
+        .doctor-card[data-dept*="Anes"] .token-box { background: #263238; }
+        .doctor-card[data-dept*="Anes"] .dept-badge { background: #455a64; color: white; }
+
+        /* 11. Pediatrics (Bright Yellow/Orange - if you have it) */
+        .doctor-card[data-dept*="Pedia"] { border-top-color: #ffca28; }
+        .doctor-card[data-dept*="Pedia"] .token-box { background: #ffa000; }
+        .doctor-card[data-dept*="Pedia"] .dept-badge { background: #ffca28; color: #333; }
         /* Typography */
-        .display-token { font-size: 5rem; font-weight: 700; line-height: 1; }
+        .display-token { font-size: clamp(3rem, 8vw, 5rem); font-weight: 700; line-height: 1; }
         
         /* Animation */
         .blink { animation: blinker 1.5s linear infinite; }
@@ -55,22 +78,22 @@
 </head>
 <body>
 
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-4 px-4">
         
-        <div class="d-flex justify-content-between align-items-center mb-5 border-bottom border-secondary pb-3">
-            <div>
+        <div class="row align-items-center mb-4 border-bottom border-secondary pb-3">
+            <div class="col-12 col-md-8 text-center text-md-start mb-3 mb-md-0">
                 <h1 class="fw-bold mb-0">🏥 LIVE QUEUE STATUS</h1>
                 <p class="text-muted mb-0">Real-time updates from all departments</p>
             </div>
-            <div class="text-end">
-                <h3 id="clock" class="fw-bold">--:--</h3>
+            <div class="col-12 col-md-4 text-center text-md-end">
+                <h3 id="clock" class="fw-bold mb-0">--:--</h3>
                 <small class="text-muted" id="date">Loading...</small>
             </div>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
             {% for item in doctors %}
-            <div class="col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="doctor-card shadow p-3" data-dept="{{ item.dept }}">
                     
                     <div class="d-flex justify-content-between align-items-start mb-3">
@@ -81,29 +104,39 @@
                             <span class="dept-badge">{{ item.dept }}</span>
                         </div>
                         {% if item.current_token != "--" %}
-                            <i class="fas fa-circle text-danger blink small"></i>
+                            <i class="fas fa-circle text-danger blink small mt-1"></i>
                         {% else %}
-                            <i class="fas fa-circle text-muted small"></i>
+                            <i class="fas fa-circle text-muted small mt-1"></i>
                         {% endif %}
                     </div>
 
-                    <div class="token-box text-center mb-3 shadow-sm">
+                    <div class="token-box text-center mb-3 shadow-sm flex-grow-1 d-flex flex-column justify-content-center">
                         <small class="d-block text-white-50 text-uppercase" style="font-size: 0.7rem;">Now Serving</small>
                         <div class="display-token">{{ item.current_token }}</div>
                         <div class="fw-bold text-truncate mt-1">{{ item.current_name }}</div>
                     </div>
 
-                    <div class="bg-dark rounded p-2 border border-secondary">
-                        <small class="text-muted text-uppercase ms-1" style="font-size: 0.65rem;">Up Next</small>
+                    <div class="bg-dark rounded p-2 border border-secondary mt-auto">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="text-muted text-uppercase ms-1" style="font-size: 0.65rem;">Up Next</small>
+                            <span class="badge bg-secondary rounded-pill" style="font-size: 0.65rem;">{{ item.total_waiting }} in queue</span>
+                        </div>
+                        
                         <ul class="list-unstyled mb-0 mt-2">
                             {% for next_p in item.waiting %}
                             <li class="d-flex justify-content-between px-2 py-1 border-bottom border-secondary" style="font-size: 0.85rem;">
                                 <span class="text-white fw-bold">#{{ next_p.token_number }}</span>
-                                <span class="text-muted text-truncate" style="max-width: 110px;">{{ next_p.patient_name }}</span>
+                                <span class="text-light text-truncate" style="max-width: 130px;">{{ next_p.patient_name }}</span>
                             </li>
                             {% empty %}
                             <li class="text-center text-muted small py-2 italic">Queue Empty</li>
                             {% endfor %}
+                            
+                            {% if item.total_waiting > 3 %}
+                            <li class="text-center text-white-50 small py-1 mt-1 rounded" style="font-size: 0.75rem; background: rgba(255,255,255,0.05);">
+                                + {{ item.total_waiting|add:"-3" }} more waiting...
+                            </li>
+                            {% endif %}
                         </ul>
                     </div>
 

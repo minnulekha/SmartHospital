@@ -167,14 +167,17 @@ def public_display(request):
     
     for doc in active_doctors:
         current = Appointment.objects.filter(doctor=doc, status='in_consultation').first()
-        waiting = Appointment.objects.filter(doctor=doc, status='waiting').order_by('token_number')[:3]
+        
+        # 1. Get ALL waiting patients to count them
+        all_waiting = Appointment.objects.filter(doctor=doc, status='waiting').order_by('token_number')
         
         doctor_data.append({
             'doctor': doc, 
             'dept': doc.department.name,
             'current_token': current.token_number if current else "--",
             'current_name': current.patient_name if current else "Available",
-            'waiting': waiting 
+            'waiting': all_waiting[:3],         # Just the next 3 names for the UI
+            'total_waiting': all_waiting.count() # The true total count of everyone
         })
         
     return render(request, 'hospital/display.html', {'doctors': doctor_data})
