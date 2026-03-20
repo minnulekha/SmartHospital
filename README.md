@@ -1,98 +1,144 @@
-# Smart Hospital
+# 🏥 Smart Hospital: AI-Powered Queue Management
 
-## Basic Details
-### Team Name: Code Craft
+🏆 **TechSprint 2026 Hackathon Winner — Google Developer Groups (GDG LBSITW)**
 
-### Team Members
-- **Minnu Lekha V G** - LBSITW
-- **Devu L S** - LBSITW
-- **Rudra Lakshmi B P** - LBSITW
-- **Abhirami S** - LBSITW
+https://smart-hospital-709984752011.asia-south1.run.app/
 
-### Hosted Project Link
-[https://smart-hospital-709984752011.asia-south1.run.app](https://smart-hospital-709984752011.asia-south1.run.app)
+**Team Name:** ThinkByte | **Event:** TechSprint 2026
 
-### Project Description
-Smart Hospital is an AI-powered queue management system designed to eliminate physical waiting lines. It provides patients with live wait-time estimations, dynamic travel alerts via Google Maps, and a digital ticketing system to ensure a seamless healthcare experience.
+[![Achievement](https://img.shields.io/badge/Award-🏆%20Winner%20TechSprint%202026-gold)](#)
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Project-brightgreen)](https://smart-hospital-709984752011.asia-south1.run.app)
+[![Python](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/)
+[![Framework](https://img.shields.io/badge/Framework-Django-092e20.svg)](https://www.djangoproject.com/)
 
-### The Problem
-Traditional hospital waiting rooms are overcrowded, leading to patient frustration, increased risk of infection, and uncertainty regarding consultation times.
-
-### The Solution
-Our project, **"Smart Hospital,"** uses real-time data synchronization via Firebase and Google Cloud to allow patients to track their queue position from home and arrive just in time for their appointment.
 
 ---
 
-## Technical Details
+## 📌 Project Overview
+**Smart Hospital** is an innovative AI-driven solution designed to eliminate physical waiting lines in healthcare facilities. By synchronizing real-time data, the system empowers patients to manage their time effectively, reducing hospital congestion and improving the overall patient experience.
 
-### Technologies/Components Used
+### ⚠️ The Problem
+Traditional hospital waiting rooms are often overcrowded, leading to:
+* High patient frustration and "waiting room anxiety."
+* Increased risk of cross-infection in confined spaces.
+* Total uncertainty regarding actual consultation times.
 
-#### Software
-- **Languages:** Python 3.13, HTML, CSS, JavaScript
-- **Frameworks:** Django (Full Stack)
-- **Libraries:** Bootstrap 5, xhtml2pdf
-- **Google Technologies:** Google Cloud Run, Firebase Realtime Database, Firebase Authentication, Google Maps Platform
-- **Tools:** Visual Studio Code, Google Cloud SDK
+### ✅ The Solution
+Our platform leverages **Firebase Realtime Database** and **Google Cloud** to provide:
+* **Live Wait-Time Estimations:** Patients know exactly when to leave home.
+* **Dynamic Travel Alerts:** Integration with Google Maps Platform to calculate commute times.
+* **Digital Ticketing:** A seamless, paperless entry system for appointments.
 
-### Implementation
+---
 
-#### Software
-- **Installation:**
-  ```bash
-  pip install django firebase-admin google-cloud-run
+## 🏆 Hackathon Achievement
+
+**Smart Hospital** secured **1st Place (Winner)** at the **TechSprint 2026 Hackathon** conducted by  
+**Google Developer Groups (GDG) – LBS Institute of Technology for Women**.
+
+The project was recognized for:
+- Practical real-world healthcare impact
+- Intelligent queue prediction logic
+- Seamless real-time synchronization
+- Effective use of Google Cloud & Firebase ecosystem
+
+> The judges appreciated the solution’s ability to reduce hospital congestion and improve patient experience using predictive technology.
+
+
+## 🛠️ Technical Stack
+
+| Category | Technologies |
+| :--- | :--- |
+| **Languages** | Python 3.13, JavaScript (ES6+), HTML5, CSS3 |
+| **Backend** | Django (Full Stack Framework) |
+| **Database** | Firebase Realtime Database |
+| **Cloud/DevOps** | Google Cloud Run, Firebase Auth, Google Cloud SDK |
+| **APIs** | Google Maps Platform (Distance Matrix & JavaScript API) |
+| **Styling** | Bootstrap 5 |
+
+---
+
+## 🚀 Key Features
+
+* **Intelligent Queue Logic:** AI-based predictive logic to estimate the duration of each consultation.
+* **Real-time Synchronization:** Instant updates across Doctor and Patient dashboards.
+* **Location-Aware Alerts:** Notifies patients when they need to start traveling based on current traffic.
+* **Secure Authentication:** Managed via Firebase for robust user data protection.
+* **Automated PDF Reports:** Generates digital tokens and summaries using `xhtml2pdf`.
+
+---
+
+## 📸 System Preview
+
+### Patient Experience
+| Digital Token & Portal | Real-time Travel Tracking |
+| :---: | :---: |
+| ![Patient Portal](https://github.com/user-attachments/assets/cc7d7b08-5002-41a0-8475-835590aab36d) | ![Live Tracking](https://github.com/user-attachments/assets/a6f499b8-fa6f-4ad3-b30e-72e5b3045810) |
+
+### Administrative & Doctor Portals
+| Doctor Management Dashboard | Live Queue Display |
+| :---: | :---: |
+| ![Doctor Dashboard](https://github.com/user-attachments/assets/261f406f-ca22-46dc-8038-1ce7062a76c0) | ![Queue Status 1](https://github.com/user-attachments/assets/10a9b25b-de7f-4e15-9dfd-a927f54b8ab1) |
+
+> **Additional View:** [Live Queue Status - Patient View](https://github.com/user-attachments/assets/639d3b17-872a-4668-803d-4f746d394951)
+
+---
+
+## ⚙️ Installation & Deployment
+
+### Local Setup
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/your-username/smart-hospital.git](https://github.com/your-username/smart-hospital.git)
+   cd smart-hospital
 
 ```
 
-* **Run:**
+2. **Install dependencies:**
+```bash
+pip install django firebase-admin google-cloud-run xhtml2pdf
+
+```
+
+
+3. **Run the server:**
 ```bash
 python manage.py runserver
 
 ```
 
 
-* **Deploy:**
+
+### Cloud Deployment
+
+Deploy to Google Cloud Run effortlessly:
+
 ```bash
 gcloud run deploy smart-hospital --source .
 
 ```
 
+---
 
+## 🎬 Project Demo
+
+📺 **[Watch the End-to-End Workflow](https://drive.google.com/file/d/10ka-ayh--1ISkIG0CGJdMacRefcYy4mo/view?usp=drive_link)**
+
+The demo covers:
+
+1. Patient booking a digital token.
+2. Real-time travel alerts via Google Maps.
+3. Doctor backend managing the live queue status.
 
 ---
 
-## Project Documentation
+## 👥 The Team: ThinkByte
 
-### Software
-
-* **Screenshots**
-* **Patient Dashboard:** <img width="1348" height="589" alt="image" src="https://github.com/user-attachments/assets/b5fdb73d-f837-47ef-95c6-25d61e154590" />
-
-
-* **Live Queue Display:** <img width="1356" height="561" alt="Screenshot 2026-01-16 232931" src="https://github.com/user-attachments/assets/97091d86-dbec-4d7f-8904-957a44a87bb9" />
-
-* **Doctor Portal:** <img width="1356" height="589" alt="image" src="https://github.com/user-attachments/assets/9baeecfc-b78b-45a1-b314-1fe9ca6ba154" />
-
-
-
-* **Diagrams**
-"The platform utilizes a hybrid cloud architecture. When a doctor updates a status, Firebase triggers a sub-second sync across all patient devices, while Google Maps API calculates the optimal 'Leave By' time for the user."
-* **Build Photos**
-* **Cloud Architecture:** [Insert Screenshot Link]
-* **Final Product:** [Insert Screenshot Link]
-
-
-
-### Project Demo
-
-* **Video:** [[About Project]](https://drive.google.com/file/d/10ka-ayh--1ISkIG0CGJdMacRefcYy4mo/view?usp=drive_link)
-* **Description:** This video demonstrates the end-to-end flow of the Smart Hospital system—from a patient booking a digital token and receiving a Google Maps travel alert, to the doctor managing the live queue via the backend dashboard.
+* **Minnu Lekha V G** (LBSITW): Backend Development, Google Cloud Integration, AI Predictive Logic.
+* **Devu L S** (LBSITW): Documentation & Database Schema Design.
+* **Rudra Lakshmi B P** (LBSITW): Frontend Design & UX/UI Implementation.
+* **Abhirami S** (LBSITW): Quality Assurance, Bug Fixing, & Presentation.
 
 ---
 
-## Team Contributions
-
-* **Minnu Lekha V G:** Backend development, Google Cloud integration, AI predictive logic.
-* **Devu L S:** Frontend design and UI implementation.
-* **Rudra Lakshmi B P:** Documentation, database schema design.
-* **Abhirami S:** Testing, bug fixing, and presentation prep.
-
+© 2026 Team ThinkByte | LBS Institute of Technology for Women
